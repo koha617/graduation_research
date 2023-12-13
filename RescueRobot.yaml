@@ -1,0 +1,81 @@
+behaviors:
+  RescueRobot:
+    trainer_type: ppo
+    
+    max_steps: 100000000
+    time_horizon: 128
+    summary_freq: 1000
+    keep_checkpoints: 5
+    
+    hyperparameters:
+      batch_size: 128
+      buffer_size: 2048
+      learning_rate: 0.0003
+      learning_rate_schedule: linear
+      
+      beta: 0.005
+      epsilon: 0.2
+      lambd: 0.95
+      num_epoch: 3
+      
+    network_settings:
+      normalize: false
+      hidden_units: 128
+      num_layers: 2
+      vis_encode_type: simple
+      
+    reward_signals:
+      extrinsic:
+        gamma: 0.99
+        strength: 1.0
+
+environment_parameters:
+  stage_number:
+    curriculum:
+      - name: stage1
+        completion_criteria:
+          measure: reward
+          behavior: RescueRobot
+          min_lesson_length: 100
+          threshold: 0.9
+        value: 1.0
+        
+      - name: stage2
+        completion_criteria:
+          measure: reward
+          behavior: RescueRobot
+          min_lesson_length: 100
+          threshold: 0.9
+        value: 2.0
+        
+      - name: stage3
+        completion_criteria:
+          measure: reward
+          behavior: RescueRobot
+          min_lesson_length: 100
+          threshold: 0.9
+        value: 3.0
+        
+      - name: stage4
+        completion_criteria:
+          measure: reward
+          behavior: RescueRobot
+          min_lesson_length: 100
+          threshold: 0.9
+        value: 4.0
+        
+      - name: stage5
+        completion_criteria:
+          measure: reward
+          behavior: RescueRobot
+          min_lesson_length: 100
+          threshold: 0.9
+        value: 5.0
+        
+      - name: ForStage5EarlyStopping
+        completion_criteria:
+          measure: reward
+          behavior: RescueRobot
+          min_lesson_length: 100
+          threshold: 0.9
+        value: 6.0
